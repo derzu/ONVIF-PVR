@@ -12,4 +12,4 @@ rtsp://@192.168.15.4:554/onvif1 udp save
 #cam04 this is a comment.
 rtsp://192.168.15.8:554/user=admin_password=_channel=1_stream=0.sdp save
 #cam05
-webcam
+/dev/video0

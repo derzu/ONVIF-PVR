@@ -171,7 +171,7 @@ mtx2->unlock();
 #endif
 		}
 		else {
-			stream = new cv::VideoCapture(0);
+			stream = new cv::VideoCapture(url);
 			//stream = new cv::VideoCapture(url, cv::CAP_GSTREAMER);
 			//stream = new cv::VideoCapture(url, cv::CAP_FFMPEG);
 			//stream = new cv::VideoCapture(url, cv::CAP_UNICAP);
@@ -182,10 +182,10 @@ mtx2->unlock();
 			std::cout << title << "::Not possible to connect " << url << std::endl;
 			qFailures++;
 
-			if (qFailures>5)
+			if (qFailures>10)
 				break;
 			else {
-				usleep(2000000);
+				usleep(4000000);
 				continue;
 			}
 		}
@@ -351,8 +351,10 @@ cv::Mat Camera::getFrame() {
 	if (notAvailable) {
 		// if doesn't start to capture the frames, genereate a loading image 600x600.
 		frame = cv::Mat(600, 600, CV_8UC3, cv::Scalar(100, 100, 100));
-		if (!loading.empty()) loading.copyTo(frame.rowRange(108, 108 + loading.rows).colRange(108, 108 + loading.cols));
-		cv::putText(frame, "Loading...", cv::Point(220, 310), cv::FONT_HERSHEY_DUPLEX, 1.0, CV_RGB(220, 220, 220), 2);
+		if (!frame.empty()) {
+			if (!loading.empty()) loading.copyTo(frame.rowRange(108, 108 + loading.rows).colRange(108, 108 + loading.cols));
+			cv::putText(frame, "Loading...", cv::Point(220, 310), cv::FONT_HERSHEY_DUPLEX, 1.0, CV_RGB(220, 220, 220), 2);
+		}
 	}
 
 	mtx->unlock();
