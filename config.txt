@@ -1,0 +1,15 @@
+# List of the cameras. Format:
+# rtsp adress followed by:
+#      udp string if the rtsp stream is udp. If tcp nothing is necessary.
+#      save string if is to save the video.
+#
+#cam01
+rtsp://@192.168.15.2:554/onvif1 udp save
+#cam02
+rtsp://@192.168.15.3:554/onvif1 udp save
+#cam03
+rtsp://@192.168.15.4:554/onvif1 udp save
+#cam04 this is a comment.
+rtsp://192.168.15.8:554/user=admin_password=_channel=1_stream=0.sdp save
+#cam05
+webcam
