@@ -240,7 +240,7 @@ int Camera::playVideo(cv::VideoCapture * stream) {
         {
              std::cout << title << "::Cannot grab a frame from video stream. Openned: " << stream->isOpened() << std::endl;
              qFailures++;
-             if (qFailures>20) {
+             if (qFailures>10) {
 	             ret = INTERNAL_QUIT;
 	             break;
              }

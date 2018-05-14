@@ -94,7 +94,7 @@ void VideoPlayer::createOne(std::vector<cv::Mat> & images, cv::Mat &result, int 
             if ( i >= images.size() ) // shouldn't happen, but let's be safe
                 return ;
             // get the ROI in our result-image
-printf("%d::%d::%d::%d::%d::%d\n", current_height, current_height + images[i].rows, current_width,  current_width  + images[i].cols, images[i].rows, images[i].cols);
+			//printf("%d::%d::%d::%d::%d::%d\n", current_height, current_height + images[i].rows, current_width,  current_width  + images[i].cols, images[i].rows, images[i].cols);
             cv::Mat roi(result,
                        cv::Range(current_height, current_height + images[i].rows),
                        cv::Range(current_width,  current_width  + images[i].cols));
@@ -143,7 +143,7 @@ printf("%d::%d::%d::%d::%d::%d\n", current_height, current_height + images[i].ro
                     }
             }
             int windowWidth = maxRowLength;
-			if (canvasImage.empty())
+			if (canvasImage.empty()) // create a new canvas, if had some change.
 	            canvasImage = cv::Mat(windowHeight, windowWidth, CV_8UC3, cv::Scalar(0, 0, 0));
 
             for (int k = 0, i = 0; i < nRows; i++) {
@@ -164,11 +164,11 @@ printf("%d::%d::%d::%d::%d::%d\n", current_height, current_height + images[i].ro
                             } else {             
                                 vecMat[k].copyTo(target_ROI);
                             }
-			//printf("%3d::%3d::%3d::%3d::%d::%d\n", x, y, resizeWidth[k], resizeHeight, windowWidth, windowHeight);
                             cv::resize(target_ROI, target_ROI, s);
                             if (target_ROI.type() != canvasImage.type()) {
                                 target_ROI.convertTo(target_ROI, canvasImage.type());
                             }
+							//printf("%3d::%3d::%3d::%3d::%d::%d::%d::%d\n", x, y, resizeWidth[k], resizeHeight, windowWidth, windowHeight, s.width, s.height);
                             target_ROI.copyTo(canvasImage(roi));
                             x_end += resizeWidth[k] + edgeThickness;
                     }
@@ -191,7 +191,6 @@ void VideoPlayer::start() {
 	getScreenResolution(width, height);
 
 	int lastEmptyQuant = 0;
-	int lastFinalizedQuant = 0;
 	// While para se o player quebrar ele reiniciar automatico.
 #ifndef DEBUG_VALGRIND
 	while (!stopped)
@@ -210,29 +209,29 @@ void VideoPlayer::start() {
 		{
 			std::vector<cv::Mat> frames;
 			int emptyQuant = 0;
-			int finalizedQuant = 0;
 			// Atualiza os frames.
 			for (int i=0 ; i<cameras.size() ; ) {
+				// camera was finalized.
 				if (cameras[i]->isStopped() && !cameras[i]->isRunning()) {
-					finalizedQuant++;
 					delete cameras[i];
 					cameras[i] = NULL;
 					cameras.erase(cameras.begin() + i);
+					emptyQuant++;
 					continue;
 				}
 				cv::Mat f = cameras[i]->getFrame();
 				if (cameras[i]->empty(f))
 					emptyQuant++;
 				frames.push_back(f);
-				//cameras[i]->stop();
+
 				i++;
 			}
 			if (cameras.empty())
 				break;
 
 			if (emptyQuant != lastEmptyQuant) {
-				colorImage.release();
-				fullImage.release();
+				colorImage.release(); // make Mat empty()
+				fullImage.release(); // make Mat empty()
 				lastEmptyQuant = emptyQuant;
 			}
 

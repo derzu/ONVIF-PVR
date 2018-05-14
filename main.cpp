@@ -129,11 +129,11 @@ int main(int argc, char* argv[]) {
 			//PlateDetector * pd = new PlateDetector();
 			//cameras[i]->registerMovementListener(pd);
 			//cameras[i]->registerAllFramesListener(pd);
-			cameras[i]->run();
+			cameras[i]->run(); // start the thread
 		}
 
 		VideoPlayer *vp = new VideoPlayer(cameras, "Onvif PVR");
-		vp->start();
+		vp->start(); // not a thread
 		delete vp;
 	}
 

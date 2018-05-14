@@ -19,11 +19,8 @@ all: executavel
 executavel: $(OBJECTS)
 	$(CCP) -o $(TARGET) $(OBJECTS) $(LIBS) $(INCLUDES) $(FLAGS) $(FLAGS_OPENCV)
 
-.c.o: $<
-	$(CCP) -DDEBUG_LEVEL=15 -c $< -o $@ $(LIBS) $(INCLUDES) $(FLAGS) 
-
 .cpp.o: $<
-	$(CCP) -DDEBUG_LEVEL=15 -c $< -o $@ $(LIBS) $(INCLUDES) $(FLAGS) $(FLAGS_OPENCV) -std=c++11 -fpermissive
+	$(CCP) -c $< -o $@ $(LIBS) $(INCLUDES) $(FLAGS) $(FLAGS_OPENCV) -std=c++11 -fpermissive
 
 
 clean:
