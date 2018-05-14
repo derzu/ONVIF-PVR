@@ -1,5 +1,5 @@
 # List of the cameras. Format:
-# rtsp adress followed by:
+# rtsp address followed by:
 #      udp string if the rtsp stream is udp. If tcp nothing is necessary.
 #      save string if is to save the video, nothing if just to view.
 #
