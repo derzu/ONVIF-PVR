@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
 #include <string.h>
 #include "VideoPlayer.h"
@@ -83,6 +84,9 @@ int main(int argc, char* argv[]) {
 				if (url==NULL) {
 					printf("Looking for IP\n");
 					DiscoveryRTSP_IP disc("192.168.15.2"); // TODO dectar IP/rede auto
+					if (argc>2)
+						disc = DiscoveryRTSP_IP(argv[2]);
+						
 					std::list<char *> ips = disc.discovery();
 				
 					if (ips.empty()) {
