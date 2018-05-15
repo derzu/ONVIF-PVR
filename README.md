@@ -1,4 +1,4 @@
-# ONVIF-PVR
+# ONVIF NVC and PVR
 ONVIF multi device client NVC (Network Video Client) and PVR (Personal Video Recorder) . It shows and record multiple ONVIF cameras using RTSP over UDP or TCP.
 Tested on Linux, should work easily on others OS's.
 
