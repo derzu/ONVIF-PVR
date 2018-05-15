@@ -11,10 +11,10 @@ Tested on Linux, should work easily on others OS's.
 
 # Run
 - ./OnvifPVR configFile.txt
-- ./OnvifPVR IP
+- ./OnvifPVR IP 192.168.1.1
   - Look for the IP of ONVIF cameras on local network.
-- ./OnvifPVR rtsp://@192.168.15.2:554/onvif1 (udp)
-  - Runs OnvifPVR for just one camera, udp optional.ß
+- ./OnvifPVR rtsp://@192.168.15.2:554/onvif1 udp
+  - Runs OnvifPVR for just one camera, udp if the the stream is udp.
 
 # Config file
 The actual version requires the rtsp link, if is to save or not, and if is udp or tcp. See this sample:
