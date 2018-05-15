@@ -126,14 +126,11 @@ int main(int argc, char* argv[]) {
 		for (int i=0 ; i<cameras.size() ; i++) {
 			if (cameras[i]->isToSave())
 				cameras[i]->registerMovementListener(new VideoWriterManager(cameras[i]->getTitle()));
-			//PlateDetector * pd = new PlateDetector();
-			//cameras[i]->registerMovementListener(pd);
-			//cameras[i]->registerAllFramesListener(pd);
-			cameras[i]->run(); // start the thread
+			cameras[i]->start(); // start the thread
 		}
 
 		VideoPlayer *vp = new VideoPlayer(cameras, "Onvif PVR");
-		vp->start(); // not a thread
+		vp->run(); // not a thread
 		delete vp;
 	}
 

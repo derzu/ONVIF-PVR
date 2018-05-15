@@ -19,7 +19,7 @@ class VideoPlayer {
 		VideoPlayer(std::vector<Camera*> &cameras, const char * title);
 		virtual ~VideoPlayer();
 
-		void start();
+		void run();
 		void stop();
 		
 	private:

@@ -50,7 +50,7 @@ Camera::~Camera() {
 	frame.release();
 		
 	for (std::vector<VideoListener*>::iterator it = moveListeners.begin(); it != moveListeners.end(); it++) {
-		std::cout << title << "::Deletando::" << *it << std::endl;
+		std::cout << title << "::Deleting::" << *it << std::endl;
 		if (*it) {
 			delete (*it);
 			if (*it == frameListener)
@@ -121,21 +121,43 @@ const char * Camera::getTitle() {
 	return title;	
 }
 
-void Camera::run() {
-	threadPlayer = new std::thread(&Camera::start, this);
+/**
+ * Start the run method over a thread.
+ **/
+void Camera::start() {
+	threadPlayer = new std::thread(&Camera::run, this);
 }
 
+/**
+ * Verify if the frame is empty. It is Mat is empty or if it is the default 600x600 frame.
+ * 
+ * @return if the frame is or not empty.
+ **/
 bool Camera::empty() {
 	cv::Mat f = getFrame();
 
 	return f.empty() || (f.rows==600 && f.cols==600);
 }
 
+/**
+ * Verify if the frame f is empty. It is Mat is empty or if it is the default 600x600 frame.
+ * 
+ * @param f Mat to be verified. 
+ *
+ * @return if the frame is or not empty.
+ **/
 bool Camera::empty(cv::Mat f) {
 	return f.empty() || (f.rows==600 && f.cols==600);
 }
 
-void Camera::start() {
+/**
+ * Camera init loop.
+ * Open, and init the camera.
+ * It is a loop to to be more robust.
+ *
+ * @see playVideo()
+ **/
+void Camera::run() {
 mtx2->lock();
 	running = true;
 mtx2->unlock();
@@ -213,7 +235,14 @@ mtx2->unlock();
 }
 
 
-
+/**
+ * Camera main loop. 
+ * It grabs and process the frame from the camera.
+ * 
+ * @param stream the VideoCapture.
+ *
+ * @return the exit status (error or not)
+ **/
 int Camera::playVideo(cv::VideoCapture * stream) {
     int qFailures = 0;
     int ret = INTERNAL_QUIT;
@@ -306,6 +335,14 @@ int Camera::playVideo(cv::VideoCapture * stream) {
 }
 
 
+/**
+ * Verify if has movement on the camera looking for the 2 last frames.
+ * 
+ * @param frame1 first frame to be compared.
+ * @param frame2 second frame to be compared.
+ *
+ * @return true if had movement, false if not.
+ **/
 bool Camera::verifyMovement(uchar* frame1, uchar* frame2, int size) {
 	float percentual = 0.015;
 	int maxDiff = 20;
@@ -326,6 +363,12 @@ bool Camera::verifyMovement(uchar* frame1, uchar* frame2, int size) {
 		return false;
 }
 
+
+/**
+ * Returns the last grabbed frame.
+ *
+ * @return last grabbed frame.
+ **/
 cv::Mat Camera::getFrame() {
 	mtx->lock();
 	bool notAvailable = false;
@@ -362,12 +405,24 @@ cv::Mat Camera::getFrame() {
 	return frame;
 }
 
+/**
+ * If has movement notify the movement listeners.
+ * 
+ * @param colorImage last frame
+ * @param grayImage last frame converted to grayscale
+ */ 
 void Camera::notifyMovementListeners(cv::Mat &colorImage, cv::Mat &grayImag) {
 	for (std::vector<VideoListener*>::iterator it = moveListeners.begin(); it != moveListeners.end(); it++) {
 		(*it)->onMovement(colorImage, grayImage);
 	}
 }
 
+/**
+ * If has a new frame notify the All Frame Listeners
+ * 
+ * @param colorImage last frame
+ * @param grayImage last frame converted to grayscale
+ */ 
 void Camera::notifyAllFramesListeners(cv::Mat &colorImage) {
 	if (frameListener)
 		frameListener->onFrame(colorImage);
