@@ -16,22 +16,53 @@ class Camera {
 	public:
 		Camera(char * title, char *, bool, bool);
 		virtual ~Camera();
-		bool verifyMovement(uchar* frame1, uchar* frame2, int size);
-		int playVideo(cv::VideoCapture * stream);
-		void start();
+
 		void stop();
 		bool isStopped();
 		void join();
-		void run();
 		void setUDP(bool udp);
 		bool isToSave();
 		bool isUDP();
 		bool isReady();
 		bool isRunning();
 		const char * getTitle();
+
+		/**
+		 * Start the run method over a thread.
+		 */
+		void start();
+
+		/**
+		 * Verify if has movement on the camera looking for the 2 last frames.
+		 * 
+		 * @param frame1 first frame to be compared.
+		 * @param frame2 second frame to be compared.
+		 *
+		 * @return true if had movement, false if not.
+		 */
+		bool verifyMovement(uchar* frame1, uchar* frame2, int size);
+
+		/**
+		 * Verify if the frame is empty. It is Mat is empty or if it is the default 600x600 frame.
+		 * 
+		 * @return if the frame is or not empty.
+		 */
 		bool empty();
+
+		/**
+		 * Verify if the frame f is empty. It is Mat is empty or if it is the default 600x600 frame.
+		 * 
+		 * @param f Mat to be verified. 
+		 *
+		 * @return if the frame is or not empty.
+		 */
 		bool empty(cv::Mat f);
 
+		/**
+		 * Returns the last grabbed frame.
+		 *
+		 * @return last grabbed frame.
+		 */
 		cv::Mat getFrame();
 
 		// listeners
@@ -43,6 +74,25 @@ class Camera {
 		cv::VideoCapture * stream = NULL;
 
 	private:
+		/**
+		 * Camera init loop.
+		 * Open, and init the camera.
+		 * It is a loop to to be more robust.
+		 *
+		 * @see playVideo()
+		 */
+		void run();
+
+		/**
+		 * Camera main loop. 
+		 * It grabs and process the frame from the camera.
+		 * 
+		 * @param stream the VideoCapture.
+		 *
+		 * @return the exit status (error or not)
+		 */
+		int playVideo(cv::VideoCapture * stream);
+
 		const char * title;
 		char * url;
 		int width, height;

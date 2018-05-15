@@ -123,7 +123,7 @@ const char * Camera::getTitle() {
 
 /**
  * Start the run method over a thread.
- **/
+ */
 void Camera::start() {
 	threadPlayer = new std::thread(&Camera::run, this);
 }
@@ -132,7 +132,7 @@ void Camera::start() {
  * Verify if the frame is empty. It is Mat is empty or if it is the default 600x600 frame.
  * 
  * @return if the frame is or not empty.
- **/
+ */
 bool Camera::empty() {
 	cv::Mat f = getFrame();
 
@@ -145,7 +145,7 @@ bool Camera::empty() {
  * @param f Mat to be verified. 
  *
  * @return if the frame is or not empty.
- **/
+ */
 bool Camera::empty(cv::Mat f) {
 	return f.empty() || (f.rows==600 && f.cols==600);
 }
@@ -156,7 +156,7 @@ bool Camera::empty(cv::Mat f) {
  * It is a loop to to be more robust.
  *
  * @see playVideo()
- **/
+ */
 void Camera::run() {
 mtx2->lock();
 	running = true;
@@ -242,7 +242,7 @@ mtx2->unlock();
  * @param stream the VideoCapture.
  *
  * @return the exit status (error or not)
- **/
+ */
 int Camera::playVideo(cv::VideoCapture * stream) {
     int qFailures = 0;
     int ret = INTERNAL_QUIT;
@@ -342,7 +342,7 @@ int Camera::playVideo(cv::VideoCapture * stream) {
  * @param frame2 second frame to be compared.
  *
  * @return true if had movement, false if not.
- **/
+ */
 bool Camera::verifyMovement(uchar* frame1, uchar* frame2, int size) {
 	float percentual = 0.015;
 	int maxDiff = 20;
@@ -368,7 +368,7 @@ bool Camera::verifyMovement(uchar* frame1, uchar* frame2, int size) {
  * Returns the last grabbed frame.
  *
  * @return last grabbed frame.
- **/
+ */
 cv::Mat Camera::getFrame() {
 	mtx->lock();
 	bool notAvailable = false;

@@ -1,0 +1,7 @@
+videos/*.avi
+src/*.o
+src/*~
+include/*~
+*.o
+OnvifPVR
+

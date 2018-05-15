@@ -40,7 +40,7 @@ VideoPlayer::~VideoPlayer() {
 /**
  * Stop all cameras.
  * Stop main video player loop.
- **/
+ */
 void VideoPlayer::stop() {
 	for (int i=0 ; i<cameras.size() ; i++)
 		cameras[i]->stop();
@@ -54,7 +54,7 @@ void VideoPlayer::stop() {
  *
  * @param width variable where the width will be set. 
  * @param height variable where the height will be set. 
- **/ 
+ */ 
 void VideoPlayer::getScreenResolution(int &width, int &height) {
 #if WIN32
 	width  = (int) GetSystemMetrics(SM_CXSCREEN);
@@ -191,7 +191,7 @@ cv::Mat VideoPlayer::makeCanvas(std::vector<cv::Mat>& vecMat, cv::Mat &canvasIma
 /**
  * Main loop where the camera frames are shown on the screen.
  * 
- **/
+ */
 void VideoPlayer::run() {
     int key=0;
     int ret = INTERNAL_QUIT;

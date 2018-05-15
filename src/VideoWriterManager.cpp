@@ -33,6 +33,11 @@ void VideoWriterManager::setWidthHeight(int width, int height) {
 	this->qPixels = width * height;
 }
 
+/**
+ * @Overrided from VideoListener
+ * 
+ * If movement inserts the color frame at the writing queue.
+ */
 void VideoWriterManager::onMovement(cv::Mat &colorImage, cv::Mat &grayImage) {
 	if (writeMat.data==NULL) {
 		writeMat = colorImage.clone();
@@ -45,6 +50,14 @@ void VideoWriterManager::onFrame(cv::Mat &colorImage) {
 
 }
 
+/**
+ * Make a copy of data.
+ * 
+ * @param data the source data.
+ * @param size the byte size of the data to be copied. 
+ * 
+ * @return a copy of data.
+ */
 uchar * VideoWriterManager::copy(unsigned char * data, int size) {
 	uchar *data2 = new uchar[size]; // TODO, nao alocar sempre.
 	memcpy(data2, data, size);
@@ -57,9 +70,9 @@ void VideoWriterManager::stop() {
 }
 
 /**
- * Thread que escreve o video.
+ * Thread thta record the video
  *
- **/
+ */
 int VideoWriterManager::writeFrameVideo() {
 	// Setup output video
 	cv::VideoWriter * output = NULL;
@@ -108,7 +121,7 @@ int VideoWriterManager::writeFrameVideo() {
 		usleep(30);
 	}
 	
-	// while de gravacao.
+	// recording while.
 	while (writeMat.data && output) {
 		if (videoQueue.empty()) {
 			if (stopped) break;
